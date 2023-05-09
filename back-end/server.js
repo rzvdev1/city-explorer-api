@@ -19,23 +19,14 @@ app.get('/', (request, response) => {
 
 //render-app-name/weatherData
 app.get('/weatherData', (request, response, next) => {
-  const { dataList } = request.query;
-  console.log(dataList);
-
   try {
-    // const description = weatherData[0].data[0].weather.description;
-    // const date = weatherData[0].data[0].valid_date;
+    const { searchQuery } = request.query;
+    const cityData = weatherData.find((city) => city.city_name === searchQuery);
+    const formattedData = cityData.data.map((obj) => {
+      return new Forecast(obj);
+    });
 
-    if (dataList === 'Broken clouds') {
-      const formattedData = weatherData.data[0].map((obj) => new Forecast(obj));
-      console.log(formattedData);
-      response.status(200).send(formattedData);
-    } else if (dataList === 'Light rain') {
-      const formattedData = weatherData.data[1].map((obj) => new Forecast(obj));
-      console.log(formattedData);
-    } else {
-      response.status(404).send('Error no data');
-    }
+    response.status(200).send(formattedData);
   } catch (error) {
     next(error);
   }

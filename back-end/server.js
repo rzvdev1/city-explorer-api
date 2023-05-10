@@ -22,9 +22,7 @@ app.get('/weatherData', (request, response, next) => {
   try {
     const { searchQuery } = request.query;
     const cityData = weatherData.find((city) => city.city_name === searchQuery);
-    const formattedData = cityData.data.map((obj) => {
-      return new Forecast(obj);
-    });
+    const formattedData = cityData.data.map((obj) => new Forecast(obj));
 
     response.status(200).send(formattedData);
   } catch (error) {

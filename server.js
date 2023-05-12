@@ -30,6 +30,14 @@ app.get('/weatherData', (request, response, next) => {
   }
 });
 
+app.get('/movies', (request, response) => {
+  const { movieQuery } = request.query;
+
+  const url = `https://api.themoviedb.org/3/movie/550?api_key=${MOVIE_API_KEY}&query=${movieQuery}`;
+
+  const movieResponse = axios.get(url);
+});
+
 class Forecast {
   constructor(Obj) {
     this.date = Obj.valid_date;

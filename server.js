@@ -3,6 +3,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const axios = require('axios');
 
 const weatherData = require('./data/weather.json');
 
@@ -30,13 +31,36 @@ app.get('/weatherData', (request, response, next) => {
   }
 });
 
-app.get('/movies', (request, response) => {
-  const { movieQuery } = request.query;
+app.get('/movies', getMovies);
 
-  const url = `https://api.themoviedb.org/3/movie/550?api_key=${MOVIE_API_KEY}&query=${movieQuery}`;
+async function getMovies(request, response, next) {
+  try {
+    const { movieQuery } = request.query;
 
-  const movieResponse = axios.get(url);
-});
+    const url = `https://api.themoviedb.org/3/movie/550?api_key=${process.env.MOVIE_API_KEY}&query=${movieQuery}`;
+
+    const movieResponse = await axios.get(url);
+    const formattedData = movieResponse.data.results.map(
+      (movie) => new Movie(movie)
+    );
+
+    response.status(200).send(formattedData);
+  } catch (error) {
+    next(error);
+  }
+}
+
+class Movie {
+  constructor(obj) {
+    (this.title = obj.title),
+      (this.overview = obj.overview),
+      (this.avgVotes = obj.vote_average),
+      (this.totalVotes = obj.vote_count),
+      (this.imgUrl = obj.poster_path),
+      (this.popularity = obj.popularity),
+      (this.released = obj.released_on);
+  }
+}
 
 class Forecast {
   constructor(Obj) {

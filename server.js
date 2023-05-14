@@ -37,7 +37,10 @@ async function getMovies(request, response, next) {
   try {
     const { movieQuery } = request.query;
 
-    const url = `https://api.themoviedb.org/3/movie/550?api_key=${process.env.MOVIE_API_KEY}&query=${movieQuery}`;
+    const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&&query=${movieQuery}`;
+
+    // const url = `https://api.themoviedb.org/3/movie/550?api_key=${process.env.MOVIE_API_KEY}&query=${movieQuery}`;
+    //`https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&language=en-US&page=1&include_adult=false
 
     const movieResponse = await axios.get(url);
     const formattedData = movieResponse.data.results.map(
@@ -52,13 +55,13 @@ async function getMovies(request, response, next) {
 
 class Movie {
   constructor(obj) {
-    (this.title = obj.title),
-      (this.overview = obj.overview),
-      (this.avgVotes = obj.vote_average),
-      (this.totalVotes = obj.vote_count),
-      (this.imgUrl = obj.poster_path),
-      (this.popularity = obj.popularity),
-      (this.released = obj.released_on);
+    this.title = obj.title;
+    this.overview = obj.overview;
+    this.images_url = obj.poster_path;
+    this.average_votes = obj.vote_average;
+    this.total_votes = obj.vote_count;
+    this.popularity = obj.popularity;
+    this.released_on = obj.release_date;
   }
 }
 

@@ -6,7 +6,10 @@ const cors = require('cors');
 
 const getMovies = require('./modules/movies');
 
-const weatherData = require('./data/weather.json');
+// const weatherData = require('./data/weather.json');
+
+// const weather = require('./modules/weather');
+const getWeather = require('./modules/weather');
 
 const app = express();
 
@@ -20,23 +23,7 @@ app.get('/', (request, response) => {
 });
 
 //render-app-name/weatherData
-app.get('/weatherData', (request, response, next) => {
-  try {
-    const { searchQuery } = request.query;
-    const cityData = weatherData.find((city) => city.city_name === searchQuery);
-    const formattedData = cityData.data.map((obj) => new Forecast(obj));
-
-    response.status(200).send(formattedData);
-  } catch (error) {
-    next(error);
-  }
-});
-class Forecast {
-  constructor(Obj) {
-    this.date = Obj.valid_date;
-    this.description = Obj.weather.description;
-  }
-}
+app.get('/weather', getWeather);
 
 app.get('/movies', getMovies);
 

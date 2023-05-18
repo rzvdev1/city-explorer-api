@@ -4,7 +4,7 @@ const axios = require('axios');
 
 function getWeather(request, response, next) {
   const searchQuery = request.query.searchQuery;
-  const url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&city=${searchQuery}&days=5&units=I`;
+  const url = `http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHER_API_KEY}&city=${searchQuery}`;
   console.log(url);
   axios
     //   const cityData = weatherData.find((city) => city.city_name === searchQuery);

@@ -17,7 +17,9 @@ function getMovies(request, response, next) {
   //   next(error);
   // }
   const movieQuery = request.query.movieQuery;
-  const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&&query=${movieQuery}`;
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${movieQuery}`;
+
+  //${process.enc.MOVIE_API_KEY}/movies?movieQuery=${this.state.city}
   axios
     .get(url)
     .then((res) => res.data.results.map((movie) => new Movie(movie)))

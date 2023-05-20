@@ -10,6 +10,7 @@ const getMovies = require('./modules/movies');
 
 // const weather = require('./modules/weather');
 const getWeather = require('./modules/weather');
+const notFound = require('./modules/notFound');
 
 const app = express();
 
@@ -27,9 +28,7 @@ app.get('/weather', getWeather);
 
 app.get('/movies', getMovies);
 
-app.get('*', (request, response) => {
-  response.status(404).send('Not Found');
-});
+app.get('*', notFound);
 
 app.use((error, request, response, next) => {
   response.status(500).send(error.message);
